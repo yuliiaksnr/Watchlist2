@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineTrack — Movie Watchlist</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">CineTrack</span>
+      </div>
+      <div class="header-controls">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Пошук фільму…" autocomplete="off" />
+          <button class="search-clear" id="searchClear" title="Очистити" aria-label="Очистити пошук">✕</button>
+        </div>
+        <button class="btn btn-add" id="openAddModal">+ Додати фільм</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== BOARD ========== -->
+  <main class="board" id="board">
+
+    <!-- COLUMN: Хочу подивитись -->
+    <section class="column column--want" data-status="want" id="col-want">
+      <div class="column-header">
+        <div class="column-title-wrap">
+          <span class="column-dot"></span>
+          <h2 class="column-title">Хочу подивитись</h2>
+        </div>
+        <span class="column-count" id="count-want">0</span>
+      </div>
+      <div class="cards-list" id="list-want" data-status="want"></div>
+      <button class="btn-col-add" data-status="want">+ Додати фільм</button>
+    </section>
+
+    <!-- COLUMN: Дивлюсь -->
+    <section class="column column--watching" data-status="watching" id="col-watching">
+      <div class="column-header">
+        <div class="column-title-wrap">
+          <span class="column-dot"></span>
+          <h2 class="column-title">Дивлюсь</h2>
+        </div>
+        <span class="column-count" id="count-watching">0</span>
+      </div>
+      <div class="cards-list" id="list-watching" data-status="watching"></div>
+      <button class="btn-col-add" data-status="watching">+ Додати фільм</button>
+    </section>
+
+    <!-- COLUMN: Подивився -->
+    <section class="column column--watched" data-status="watched" id="col-watched">
+      <div class="column-header">
+        <div class="column-title-wrap">
+          <span class="column-dot"></span>
+          <h2 class="column-title">Подивився</h2>
+        </div>
+        <span class="column-count" id="count-watched">0</span>
+      </div>
+      <div class="cards-list" id="list-watched" data-status="watched"></div>
+      <button class="btn-col-add" data-status="watched">+ Додати фільм</button>
+    </section>
+
+  </main>
+
+  <!-- ========== MODAL: Додати / Редагувати ========== -->
+  <div class="modal-overlay" id="movieModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="closeMovieModal" aria-label="Закрити">✕</button>
+      <h2 class="modal-title" id="modalTitle">Новий фільм</h2>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="movieTitle">Назва фільму *</label>
+          <input type="text" id="movieTitle" placeholder="Введіть назву…" maxlength="100" />
+        </div>
+
+        <div class="form-group">
+          <label for="movieGenre">Жанр</label>
+          <select id="movieGenre">
+            <option value="">— Оберіть жанр —</option>
+            <option>Екшн</option>
+            <option>Комедія</option>
+            <option>Драма</option>
+            <option>Жахи</option>
+            <option>Фантастика</option>
+            <option>Анімація</option>
+            <option>Документальний</option>
+            <option>Трилер</option>
+            <option>Романтика</option>
+            <option>Пригоди</option>
+            <option>Кримінал</option>
+            <option>Біографія</option>
+            <option>Мюзикл</option>
+            <option>Інше</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="movieStatus">Статус *</label>
+          <select id="movieStatus">
+            <option value="want">Хочу подивитись</option>
+            <option value="watching">Дивлюсь</option>
+            <option value="watched">Подивився</option>
+          </select>
+        </div>
+
+        <!-- Want: desire level -->
+        <div class="form-group full" id="fieldDesire">
+          <label for="movieDesire">Рівень бажання переглянути: <strong id="desireVal">5</strong>/10</label>
+          <input type="range" id="movieDesire" min="1" max="10" value="5" class="range-input" />
+        </div>
+
+        <!-- Watching: progress -->
+        <div class="form-group full" id="fieldProgress">
+          <label for="movieProgress">Прогрес перегляду: <strong id="progressVal">0</strong>%</label>
+          <input type="range" id="movieProgress" min="0" max="100" value="0" class="range-input" />
+        </div>
+
+        <!-- Watched: rating -->
+        <div class="form-group full" id="fieldRating">
+          <label for="movieRating">Оцінка: <strong id="ratingVal">7</strong>/10</label>
+          <input type="range" id="movieRating" min="1" max="10" value="7" class="range-input" />
+        </div>
+
+        <div class="form-group full">
+          <label for="movieNote">Нотатка</label>
+          <textarea id="movieNote" placeholder="Ваші враження, нотатки…" rows="3" maxlength="300"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancelMovieModal">Скасувати</button>
+        <button class="btn btn-primary" id="saveMovie">Зберегти</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: Підтвердження видалення ========== -->
+  <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal modal--delete">
+      <div class="delete-icon">🗑️</div>
+      <h2 class="modal-title" id="deleteModalTitle">Видалити фільм?</h2>
+      <p class="delete-subtitle">Цю дію неможливо скасувати.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancelDelete">Скасувати</button>
+        <button class="btn btn-danger" id="confirmDelete">Видалити</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
